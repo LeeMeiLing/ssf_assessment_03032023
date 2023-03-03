@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
     <title>View 2</title>
 </head>
 <body>
@@ -18,11 +19,14 @@
         <div>
             Address: <input type="text" name="address" placeholder="shipping address" data-th-field="*{address}"> 
             <span class="error" data-th-if="${#fields.hasErrors('address')}" data-th-errors="*{address}"></span>
-
+        </div>
+        <div class="error"  data-th-if="${#fields.hasErrors('global')}">
+            <p  data-th-each="err:${#fields.errors('global')}" data-th-text="${err}"></p>
         </div>
         <br>
         <button type="submit" data-th-formmethod="get" data-th-formaction="@{/}">Back</button>
         <button type="submit" data-th-formmethod="post" data-th-formaction="@{/checkout}">Checkout</button>
     </form>
+
 </body>
 </html>

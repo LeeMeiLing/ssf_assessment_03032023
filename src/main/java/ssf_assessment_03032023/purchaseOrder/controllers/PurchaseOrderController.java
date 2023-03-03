@@ -90,7 +90,7 @@ public class PurchaseOrderController {
 
     @PostMapping("/checkout")
     public String checkout(@Valid Shipping shipping, BindingResult binding, Model model, 
-        HttpSession session) throws Exception{
+        HttpSession session){
 
         if(binding.hasErrors()){
 
@@ -115,16 +115,27 @@ public class PurchaseOrderController {
         System.out.println(itemList);// debug  // correct
         
         // get quotation
-        Quotation quotation = quoSvc.getQuotations(itemList);
+        try{
+            Quotation quotation = quoSvc.getQuotations(itemList);
 
-        // perform calculation
-        Invoice invoice = quoSvc.total(quotation, session);
+            // perform calculation
+            Invoice invoice = quoSvc.total(quotation, session);
 
-        model.addAttribute("invoice", invoice);
+            model.addAttribute("invoice", invoice);
 
-        session.invalidate();
+            session.invalidate();
 
-        // return invoice & display on view 3
-        return "view3";
+            // return invoice & display on view 3
+            return "view3";
+
+        }catch (Exception ex){
+
+            // create error message & display on view 2
+            ObjectError err = new ObjectError("quotationError", ex.getMessage());
+            binding.addError(err);
+            return "view2";
+
+        }
+
     }
 }
