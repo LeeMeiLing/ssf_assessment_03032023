@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import ssf_assessment_03032023.purchaseOrder.models.Cart;
+import ssf_assessment_03032023.purchaseOrder.models.Invoice;
 import ssf_assessment_03032023.purchaseOrder.models.Item;
 import ssf_assessment_03032023.purchaseOrder.models.Quotation;
 import ssf_assessment_03032023.purchaseOrder.models.Shipping;
@@ -106,7 +107,7 @@ public class PurchaseOrderController {
             return "redirect:/";
         }
 
-        session.setAttribute("shippping", shipping);
+        session.setAttribute("shipping", shipping);
 
         List<String> itemList = new LinkedList<>();
         itemList.addAll(cart.getCart().keySet());
@@ -117,9 +118,13 @@ public class PurchaseOrderController {
         Quotation quotation = quoSvc.getQuotations(itemList);
 
         // perform calculation
+        Invoice invoice = quoSvc.total(quotation, session);
 
-        // return invoice
-        
+        model.addAttribute("invoice", invoice);
+
+        session.invalidate();
+
+        // return invoice & display on view 3
         return "view3";
     }
 }

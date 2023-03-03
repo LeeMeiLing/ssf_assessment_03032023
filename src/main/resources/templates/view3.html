@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed</title>
+</head>
+<body>
+    <div>
+        <h1>Invoice</h1>
+        <br><br>
+        <p>Invoice Id: <span data-th-text="${invoice.invoiceId}"></span></a></p>
+        <br>
+        <p>Name: <span data-th-text="${invoice.name}"></span></p>
+        <br>   
+        <p>Address: <span data-th-text="${invoice.address}"></span></p>
+        <br>
+        <p>Total: $ <span data-th-text="${#numbers.formatDecimal(invoice.total, 1, 2)}"></span></p>
+    </div>
+</body>
+</html>

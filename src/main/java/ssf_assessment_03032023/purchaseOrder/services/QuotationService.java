@@ -15,7 +15,11 @@ import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
+import jakarta.servlet.http.HttpSession;
+import ssf_assessment_03032023.purchaseOrder.models.Cart;
+import ssf_assessment_03032023.purchaseOrder.models.Invoice;
 import ssf_assessment_03032023.purchaseOrder.models.Quotation;
+import ssf_assessment_03032023.purchaseOrder.models.Shipping;
 
 @Service
 public class QuotationService {
@@ -90,4 +94,30 @@ public class QuotationService {
         }
     
     }
+
+    public Invoice total(Quotation quotation, HttpSession session){
+
+        // retrieve cart
+        Cart cart = (Cart) session.getAttribute("cart");
+
+        Float total = 0f;
+        Float unitPrice;
+        Integer quantity;
+
+        // calculate total cost of all items in the cart
+        for (String key : cart.getCart().keySet()){
+            quantity = cart.getCart().get(key);
+            unitPrice = quotation.getQuotation(key);
+            total = total + (quantity * unitPrice);
+        }
+
+        //retrieve shipping details
+        Shipping shipping = (Shipping) session.getAttribute("shipping");
+
+        // generate invoice
+        Invoice invoice = new Invoice(shipping.getName(), shipping.getAddress(),total);
+
+        return invoice;
+    }
+
 }
