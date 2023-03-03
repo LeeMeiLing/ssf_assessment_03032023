@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>View 1</title>
+	</head>
+	<body>
+		<!--
+			Feel free to make changes to this HTML but do no change the option in select
+		-->
+
+		<h1>Shopping Cart</h1>
+
+		<form data-th-object="${item}">
+		<table>
+			<tr>
+				<td>Item:</td>
+				<td>
+					<select name="item" data-th-field="${item.itemName}">
+						<option value="apple">Apple</option>
+						<option value="orange">Orange</option>
+						<option value="bread">Bread</option>
+						<option value="cheese">Cheese</option>
+						<option value="chicken">Chicken</option>
+						<option value="mineral_water">Mineral Water</option>
+						<option value="instant_noodles">Instant Noodles</option>
+					</select>
+					<div class="error"  data-th-if="${#fields.hasErrors('global')}">
+						<p  data-th-each="err:${#fields.errors('global')}" data-th-text="${err}"></p>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>Quantity:</td>
+				<td>
+					<input type="number" name="quantity" size="4" placeholder="Quantity" data-th-field="${item.quantity}">
+					<span class="error" data-th-if="${#fields.hasErrors('quantity')}" data-th-errors="*{quantity}"></p>
+				</td>
+			</tr>
+		</table>
+
+		<table border="1" style="margin-top: 2vh; margin-bottom: 2vh;" data-th-unless="${#maps.isEmpty(cart.cart)}">
+			<thead>
+				<tr>
+					<th>Item</th>
+					<th>Quantity</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr data-th-each="i : ${cart.cart}" >
+					<td data-th-text="${i.key}"></td>
+					<td data-th-text="${i.value}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<div>
+			<p data-th-if="${#maps.isEmpty(cart.cart)}">Your cart is currently empty</p>
+		</div>
+		<div>
+			<button type="submit" data-th-formmethod="get" data-th-formaction="@{/add}">Add</button>
+			<button type="submit" data-th-formmethod="get" data-th-formaction="@{/shippingaddress}">Next</button>
+		</div>
+	</form>
+
+	</body>
+</html>

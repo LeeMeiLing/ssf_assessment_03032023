@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View 2</title>
+</head>
+<body>
+    <h1>Shipping Address</h1>
+
+    <form data-th-object="${shipping}">
+        <div>
+            Name: <input type="text" name="name" placeholder="name" data-th-field="*{name}">
+            <span class="error" data-th-if="${#fields.hasErrors('name')}" data-th-errors="*{name}"></span>
+        </div>
+        <br>
+        <div>
+            Address: <input type="text" name="address" placeholder="shipping address" data-th-field="*{address}"> 
+            <span class="error" data-th-if="${#fields.hasErrors('address')}" data-th-errors="*{address}"></span>
+
+        </div>
+        <br>
+        <button type="submit" data-th-formmethod="get" data-th-formaction="@{/}">Back</button>
+        <button type="submit" data-th-formmethod="post" data-th-formaction="@{/checkout}">Checkout</button>
+    </form>
+</body>
+</html>
