@@ -2,8 +2,6 @@ package ssf_assessment_03032023.purchaseOrder.controllers;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,7 +34,6 @@ public class PurchaseOrderController {
         if (null == cart){
             cart = new Cart();
             session.setAttribute("cart", cart);
-            System.out.println(">>>>>>>> new session cart createdin shopping cart"); // debug
         }
 
         model.addAttribute("item", new Item());
@@ -68,12 +65,10 @@ public class PurchaseOrderController {
         if (null == cart){
             cart = new Cart();
             session.setAttribute("cart", cart);
-            System.out.println(">>>>>>>> new session cart created in addToCart"); // debug
 
         }
         
         cart.addToCart(item.getItemName(), item.getQuantity());
-        System.out.println(">>>>>>>> cart = " + cart); // debug
         model.addAttribute("item", new Item());
         model.addAttribute("cart", cart);
 
@@ -83,7 +78,13 @@ public class PurchaseOrderController {
     @GetMapping("/shippingaddress")
     public String next(Model model, HttpSession session){
 
-        model.addAttribute("shipping", new Shipping());
+        Shipping shipping = (Shipping) session.getAttribute("shipping");
+
+        if (null == shipping){
+            shipping = new Shipping();
+        }
+
+        model.addAttribute("shipping", shipping);
         return "view2";
 
     }
@@ -111,8 +112,6 @@ public class PurchaseOrderController {
 
         List<String> itemList = new LinkedList<>();
         itemList.addAll(cart.getCart().keySet());
-        System.out.println(">>>>>>>>>>>>>>>>>>Item List<<<<<<<<<<<<<<<<<<<");
-        System.out.println(itemList);// debug  // correct
         
         // get quotation
         try{

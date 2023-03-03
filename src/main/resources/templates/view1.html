@@ -27,9 +27,9 @@
 						<option value="mineral_water">Mineral Water</option>
 						<option value="instant_noodles">Instant Noodles</option>
 					</select>
-					<div class="error"  data-th-if="${#fields.hasErrors('global')}">
-						<p  data-th-each="err:${#fields.errors('global')}" data-th-text="${err}"></p>
-					</div>
+					<span class="error"  data-th-if="${#fields.hasErrors('global')}">
+						<span  data-th-each="err:${#fields.errors('global')}" data-th-text="${err}"></span>
+					</span>
 				</td>
 			</tr>
 			<tr>

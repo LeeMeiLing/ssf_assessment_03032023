@@ -26,9 +26,6 @@ public class QuotationService {
 
     public Quotation getQuotations(List<String> items) throws Exception {
 
-        System.out.println(">>>>>>>>>>>>>>>>>>>>items in quoSvc");
-        System.out.println(items); // debug
-
         JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
 
         for (String item : items) {
@@ -36,9 +33,6 @@ public class QuotationService {
         }
 
         JsonArray arr = arrBuilder.build();
-
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>> Json Array");
-        System.out.println(arr.toString()); // debug
 
         RequestEntity<String> req = RequestEntity
                 .post("https://quotation.chuklee.com/quotation")
@@ -62,22 +56,16 @@ public class QuotationService {
             JsonReader reader = Json.createReader(new StringReader(payload));
             JsonObject jo = reader.readObject();
 
-            System.out.println(jo.toString()); // debug
-
             Quotation quotation = new Quotation();
 
             quotation.setQuoteId(jo.getString("quoteId"));
-            System.out.println(jo.getString("quoteId")); // debug
 
             JsonArray jsonArr = jo.getJsonArray("quotations");
             for (int i = 0; i < jsonArr.size(); i++){
                 jo = jsonArr.getJsonObject(i);
                 quotation.addQuotation(jo.getString("item"), jo.getJsonNumber("unitPrice").bigDecimalValue().floatValue());
             }
-            // quotation.addQuotation(items.get(i), jsonArr.getJsonNumber(items.get(i)).bigDecimalValue().floatValue());
             
-            System.out.println(quotation.getQuotations()); // debug
-
             // return the Quotation instance
             return quotation;
 
@@ -89,7 +77,6 @@ public class QuotationService {
             payload = resp.getBody();
             JsonReader reader = Json.createReader(new StringReader(payload));
             JsonObject jo = reader.readObject();
-            System.out.println(jo.toString()); // debug
             throw new Exception(jo.getString("error"));
         }
     
