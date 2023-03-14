@@ -51,8 +51,8 @@ public class QuotationService {
             resp = template.exchange(req, String.class);
             payload = resp.getBody();
 
-            // response is a Json object 1) quoteId & 2) quotations (a Json object)
-            // convert Json responseinto Quotation instance
+            // response is a Json object 1) quoteId & 2) quotations (a Json array of json objects)
+            // convert Json response into Quotation instance
             JsonReader reader = Json.createReader(new StringReader(payload));
             JsonObject jo = reader.readObject();
 
@@ -73,8 +73,7 @@ public class QuotationService {
 
             // if request fail, response will be an error object
             // throw exception with error message 
-
-            payload = resp.getBody();
+            payload = ex.getResponseBodyAsString();  // use this instead of resp.getBody();
             JsonReader reader = Json.createReader(new StringReader(payload));
             JsonObject jo = reader.readObject();
             throw new Exception(jo.getString("error"));
